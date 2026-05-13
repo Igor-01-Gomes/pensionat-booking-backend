@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 
-public class CustomerServiceTest {
+    class CustomerServiceTest {
 
     @Mock
     private CustomerRepository customerRepository;
@@ -29,7 +29,7 @@ public class CustomerServiceTest {
 
 
     @Test
-    public void createCustomer_ShouldSaveAndReturnCustomer() {
+    void createCustomer_ShouldSaveAndReturnCustomer() {
 
         CreateCustomerRequest request = new CreateCustomerRequest("Daniel",
                 "Lyytikäinen",
@@ -57,5 +57,15 @@ public class CustomerServiceTest {
         verify(customerRepository).save(any(CustomerEntity.class));
 
     }
-    
+    @Test
+    void givenValidRequest_WhenCreateCustomer_ThenRepositoryCalledOnce() {
+        CreateCustomerRequest request = new CreateCustomerRequest("Daniel",
+                "Lyytikäinen",
+                "Test@test.com",
+                "Password123",
+                "+46701234567");
+        when(customerRepository.save(any(CustomerEntity.class))).thenReturn(new CustomerEntity());
+        customerService.createCustomer(request);
+        verify(customerRepository).save(any(CustomerEntity.class));
+    }
 }
