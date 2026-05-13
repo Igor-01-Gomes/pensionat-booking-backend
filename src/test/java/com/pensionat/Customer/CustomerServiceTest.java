@@ -1,0 +1,61 @@
+package com.pensionat.Customer;
+
+import com.pensionat.customer.model.CreateCustomerRequest;
+import com.pensionat.customer.model.CustomerEntity;
+import com.pensionat.customer.repository.CustomerRepository;
+import com.pensionat.customer.service.CustomerService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+
+@ExtendWith(MockitoExtension.class)
+
+public class CustomerServiceTest {
+
+    @Mock
+    private CustomerRepository customerRepository;
+    @InjectMocks
+    private CustomerService customerService;
+
+
+
+    @Test
+    public void createCustomer_ShouldSaveAndReturnCustomer() {
+
+        CreateCustomerRequest request = new CreateCustomerRequest("Daniel",
+                "Lyytikäinen",
+                "Test@test.com",
+                "Password123",
+                "+46701234567");
+
+        CustomerEntity savedCustomer = new CustomerEntity();
+        savedCustomer.setFirstName("Daniel");
+        savedCustomer.setLastName("Lyytikäinen");
+        savedCustomer.setEmail("Test@test.com");
+        savedCustomer.setHashedPassword("Password123");
+        savedCustomer.setPhoneNumber("+46701234567");
+
+        when(customerRepository.save(any(CustomerEntity.class))).thenReturn(savedCustomer);
+
+        CustomerEntity testResult = customerService.createCustomer(request);
+
+        assertNotNull(testResult);
+        assertEquals("Daniel", testResult.getFirstName());
+        assertEquals("Lyytikäinen", testResult.getLastName());
+        assertEquals("Test@test.com", testResult.getEmail());
+        assertEquals("+46701234567", testResult.getPhoneNumber());
+
+        verify(customerRepository).save(any(CustomerEntity.class));
+
+    }
+    
+}
