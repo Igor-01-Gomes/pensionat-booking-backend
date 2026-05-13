@@ -1,0 +1,26 @@
+package com.pensionat.room.service;
+
+import com.pensionat.room.model.RoomEntity;
+import com.pensionat.room.repository.RoomRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class RoomService {
+
+    private final RoomRepository roomRepository;
+
+    public RoomService(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
+    }
+
+    public List<RoomEntity> getAllRooms(){
+        return roomRepository.findAll();
+    }
+
+    public Optional<RoomEntity> getRoomById(int roomId){
+        return roomRepository.findById(roomId);
+    }
+}
