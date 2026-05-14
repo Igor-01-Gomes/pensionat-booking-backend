@@ -28,7 +28,8 @@ class CustomerServiceTest {
     @Test
     void createCustomer_ShouldSaveAndReturnCustomer() {
 
-        CreateCustomerRequest request = new CreateCustomerRequest("Daniel",
+        CreateCustomerRequest request = new CreateCustomerRequest(
+                "Daniel",
                 "Lyytikäinen",
                 "Test@test.com",
                 "Password123",
@@ -57,7 +58,8 @@ class CustomerServiceTest {
 
     @Test
     void givenValidRequest_WhenCreateCustomer_ThenRepositoryCalledOnce() {
-        CreateCustomerRequest request = new CreateCustomerRequest("Daniel",
+        CreateCustomerRequest request = new CreateCustomerRequest(
+                "Daniel",
                 "Lyytikäinen",
                 "Test@test.com",
                 "Password123",
@@ -69,7 +71,8 @@ class CustomerServiceTest {
 
     @Test
     void givenRepositoryFails_WhenCreateCustomer_ThenThrowException() {
-        CreateCustomerRequest request = new CreateCustomerRequest("Daniel",
+        CreateCustomerRequest request = new CreateCustomerRequest(
+                "Daniel",
                 "Lyytikäinen",
                 "Test@test.com",
                 "Password123",
