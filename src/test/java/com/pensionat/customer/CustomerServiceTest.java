@@ -166,4 +166,24 @@ class CustomerServiceTest {
         assertThrows(NotFoundException.class, () -> customerService.updateCustomer(customerId, request));
         verify(customerRepository, never()).save(any(CustomerEntity.class));
     }
+
+    @Test
+    void givenEmailAlreadyInUse_WhenUpdateCustomer_ThenThrowBadRequestException() {
+        Long customerId = 1L;
+        UpdateCustomerRequest request = new UpdateCustomerRequest(
+                "Daniel",
+                "Lyytikäinen",
+                "UpdatedMail@mail.com",
+                "NewPassword123",
+                "+46701234567"
+
+        );
+
+        CustomerEntity existingCustomer = new CustomerEntity();
+        when(customerRepository.findById(customerId)).thenReturn(Optional.of(existingCustomer));
+        when(customerRepository.isEmailAvailable(request.email(),customerId)).thenReturn(false);
+
+        assertThrows(BadRequestException.class, () -> customerService.updateCustomer(customerId, request));
+        verify(customerRepository, never()).save(any(CustomerEntity.class));
+    }
 }
