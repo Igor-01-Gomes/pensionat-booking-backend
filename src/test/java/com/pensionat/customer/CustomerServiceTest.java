@@ -151,4 +151,19 @@ class CustomerServiceTest {
         assertEquals("UpdatedMail@mail.com", result.getEmail());
         verify(customerRepository, times(1)).save(any(CustomerEntity.class));
     }
+    @Test
+    void givenInvalidRequest_WhenUpdateCustomer_ThenThrowNotFoundException() {
+        Long customerId = 1L;
+        UpdateCustomerRequest request = new UpdateCustomerRequest(
+                "Daniel",
+                "Lyytikäinen",
+                "UpdatedMail@mail.com",
+                "NewPassword123",
+                "+46701234567"
+
+        );
+        when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> customerService.updateCustomer(customerId, request));
+        verify(customerRepository, never()).save(any(CustomerEntity.class));
+    }
 }
