@@ -51,6 +51,10 @@ public class CustomerService {
     public CustomerEntity updateCustomer(Long id, UpdateCustomerRequest request) {
         CustomerEntity customer = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
+
+        if(!customerRepository.isEmailAvailable(request.email(), id)) {
+            throw new BadRequestException("Email is already in use");
+        }
         customer.setFirstName(request.firstName());
         customer.setLastName(request.lastName());
         customer.setEmail(request.email());
