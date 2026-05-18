@@ -1,6 +1,7 @@
 package com.pensionat.booking.controller;
 
 import com.pensionat.booking.dto.CreateBookingRequest;
+import com.pensionat.booking.dto.UpdateBookingRequest;
 import com.pensionat.booking.model.BookingEntity;
 import com.pensionat.booking.service.BookingService;
 import jakarta.validation.Valid;
@@ -26,5 +27,18 @@ public class BookingController {
     @PostMapping
     public BookingEntity createBooking(@Valid @RequestBody CreateBookingRequest request) {
         return bookingService.createBooking(request);
+    }
+
+    @PutMapping("/{id}")
+    public BookingEntity updateBooking(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateBookingRequest request
+    ) {
+        return bookingService.updateBooking(id, request);
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public BookingEntity cancelBooking(@PathVariable Long id) {
+        return bookingService.cancelBooking(id);
     }
 }

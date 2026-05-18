@@ -1,8 +1,9 @@
 package com.pensionat.booking.service;
 
+import com.pensionat.booking.dto.CreateBookingRequest;
+import com.pensionat.booking.dto.UpdateBookingRequest;
 import com.pensionat.booking.model.BookingEntity;
 import com.pensionat.booking.model.BookingStatus;
-import com.pensionat.booking.dto.CreateBookingRequest;
 import com.pensionat.booking.repository.BookingRepository;
 import com.pensionat.customer.model.CustomerEntity;
 import com.pensionat.customer.repository.CustomerRepository;
@@ -49,6 +50,7 @@ public class BookingService {
                         request.endDate(),
                         request.startDate()
                 );
+
         if (roomAlreadyBooked) {
             throw new BadRequestException("Room is already booked on selected dates");
         }
@@ -61,8 +63,61 @@ public class BookingService {
                 BookingStatus.ACTIVE
         );
 
-        return  bookingRepository.save(booking);
+        return bookingRepository.save(booking);
     }
 
+    public BookingEntity updateBooking(Long id, UpdateBookingRequest request) {
+        BookingEntity booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Booking not found"));
 
+        CustomerEntity customer = customerRepository.findById(request.customerId())
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
+
+        RoomEntity room = roomRepository.findById(request.roomId())
+                .orElseThrow(() -> new NotFoundException("Room not found"));
+
+        if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
+            throw new BadRequestException("Cancelled bookings cannot be updated");
+        }
+
+        if (!request.endDate().isAfter(request.startDate())) {
+            throw new BadRequestException("Check-out date must be after check-in date");
+        }
+
+        boolean roomAlreadyBooked =
+                bookingRepository.existsByRoomIdAndBookingStatusAndStartDateBeforeAndEndDateAfter(
+                        room.getId(),
+                        BookingStatus.ACTIVE,
+                        request.endDate(),
+                        request.startDate()
+                );
+
+        if (roomAlreadyBooked &&
+                !(booking.getRoom().getId().equals(room.getId())
+                        && booking.getStartDate().equals(request.startDate())
+                        && booking.getEndDate().equals(request.endDate()))) {
+            throw new BadRequestException("Room is already booked on selected dates");
+        }
+
+        booking.setCustomer(customer);
+        booking.setRoom(room);
+        booking.setStartDate(request.startDate());
+        booking.setEndDate(request.endDate());
+        booking.setBookingStatus(BookingStatus.ACTIVE);
+
+        return bookingRepository.save(booking);
+    }
+
+    public BookingEntity cancelBooking(Long id) {
+        BookingEntity booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Booking not found"));
+
+        if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
+            throw new BadRequestException("Booking is already cancelled");
+        }
+
+        booking.setBookingStatus(BookingStatus.CANCELLED);
+
+        return bookingRepository.save(booking);
+    }
 }
