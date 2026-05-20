@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -29,6 +30,8 @@ class CustomerServiceTest {
     private CustomerRepository customerRepository;
     @Mock
     private BookingRepository bookingRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @InjectMocks
     private CustomerService customerService;
 
@@ -43,7 +46,7 @@ class CustomerServiceTest {
                 "Password123",
                 "+46701234567");
 
-
+        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
         CustomerEntity testResult = customerService.createCustomer(request);
 
         assertNotNull(testResult);
@@ -65,7 +68,7 @@ class CustomerServiceTest {
                 "Password123",
                 "+46701234567");
         when(customerRepository.save(any(CustomerEntity.class))).thenThrow(new RuntimeException("Database error!"));
-
+        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
         assertThrows(RuntimeException.class, () -> customerService.createCustomer(request));
     }
 
