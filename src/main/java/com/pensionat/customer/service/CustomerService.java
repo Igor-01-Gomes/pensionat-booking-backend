@@ -9,6 +9,7 @@ import com.pensionat.customer.model.CustomerEntity;
 import com.pensionat.customer.repository.CustomerRepository;
 import com.pensionat.exception.BadRequestException;
 import com.pensionat.exception.NotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +18,13 @@ import java.util.List;
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final BookingRepository bookingRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public CustomerService(CustomerRepository customerRepository, BookingRepository bookingRepository) {
+    public CustomerService(CustomerRepository customerRepository, BookingRepository bookingRepository, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.bookingRepository = bookingRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<CustomerEntity> getAllCustomers() {
@@ -33,7 +36,7 @@ public class CustomerService {
         customer.setFirstName(request.firstName());
         customer.setLastName(request.lastName());
         customer.setEmail(request.email());
-        customer.setHashedPassword(request.hashedPassword());
+        customer.setHashedPassword(passwordEncoder.encode(request.hashedPassword()));
         customer.setPhoneNumber(request.phone());
         customerRepository.save(customer);
         return customer;
@@ -59,7 +62,7 @@ public class CustomerService {
         customer.setFirstName(request.firstName());
         customer.setLastName(request.lastName());
         customer.setEmail(request.email());
-        customer.setHashedPassword(request.hashedPassword());
+        customer.setHashedPassword(passwordEncoder.encode(request.hashedPassword()));
         customer.setPhoneNumber(request.phone());
         customerRepository.save(customer);
         return customer;
