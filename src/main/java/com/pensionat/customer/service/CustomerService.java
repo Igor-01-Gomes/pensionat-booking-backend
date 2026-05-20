@@ -4,6 +4,8 @@ package com.pensionat.customer.service;
 import com.pensionat.booking.model.BookingStatus;
 import com.pensionat.booking.repository.BookingRepository;
 import com.pensionat.customer.dto.CreateCustomerRequest;
+import com.pensionat.customer.dto.LoginRequest;
+import com.pensionat.customer.dto.LoginResponse;
 import com.pensionat.customer.dto.UpdateCustomerRequest;
 import com.pensionat.customer.model.CustomerEntity;
 import com.pensionat.customer.repository.CustomerRepository;
@@ -66,5 +68,19 @@ public class CustomerService {
         customer.setPhoneNumber(request.phone());
         customerRepository.save(customer);
         return customer;
+    }
+    public LoginResponse login(LoginRequest request) {
+        CustomerEntity customer = customerRepository.findByEmail(request.email())
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
+        if(!passwordEncoder.matches(request.password(), customer.getHashedPassword())) {
+            throw new BadRequestException("Invalid password");
+        }
+        return new LoginResponse(
+                customer.getId(),
+                customer.getFirstName(),
+                customer.getLastName(),
+                customer.getEmail(),
+                customer.getPhoneNumber()
+        );
     }
 }

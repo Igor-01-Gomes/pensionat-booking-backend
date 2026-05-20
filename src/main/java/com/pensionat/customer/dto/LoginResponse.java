@@ -6,6 +6,5 @@ public record LoginResponse(
         String lastName,
         String email,
         String phoneNumber
-
 ) {
 }
