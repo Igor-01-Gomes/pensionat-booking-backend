@@ -80,22 +80,24 @@ public class BookingService {
             throw new BadRequestException("Cancelled bookings cannot be updated");
         }
 
+        if (!booking.getCustomer().getId().equals(customer.getId())) {
+            throw new BadRequestException("Booking can only be updated by the customer who owns it");
+        }
+
         if (!request.endDate().isAfter(request.startDate())) {
             throw new BadRequestException("Check-out date must be after check-in date");
         }
 
-        boolean roomAlreadyBooked =
-                bookingRepository.existsByRoomIdAndBookingStatusAndStartDateBeforeAndEndDateAfter(
-                        room.getId(),
-                        BookingStatus.ACTIVE,
-                        request.endDate(),
-                        request.startDate()
+        boolean roomAlreadyBooked = bookingRepository.findAll().stream()
+                .anyMatch(existingBooking ->
+                        existingBooking.getBookingStatus() == BookingStatus.ACTIVE
+                                && !existingBooking.getId().equals(id)
+                                && existingBooking.getRoom().getId().equals(room.getId())
+                                && existingBooking.getStartDate().isBefore(request.endDate())
+                                && existingBooking.getEndDate().isAfter(request.startDate())
                 );
 
-        if (roomAlreadyBooked &&
-                !(booking.getRoom().getId().equals(room.getId())
-                        && booking.getStartDate().equals(request.startDate())
-                        && booking.getEndDate().equals(request.endDate()))) {
+        if (roomAlreadyBooked) {
             throw new BadRequestException("Room is already booked on selected dates");
         }
 
