@@ -46,6 +46,9 @@ public class BookingEntity {
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
 
+    @Column(nullable = false)
+    private boolean extraBed = false;
+
     public BookingEntity(CustomerEntity customer, RoomEntity room, LocalDate startDate, LocalDate endDate, BookingStatus bookingStatus) {
         this.customer = customer;
         this.room = room;

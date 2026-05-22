@@ -18,6 +18,8 @@ public record CreateBookingRequest (
     LocalDate startDate,
 
     @NotNull(message = "Check-out date must be entered.")
-    LocalDate endDate
+    LocalDate endDate,
+
+    boolean extraBed
 ){
 }

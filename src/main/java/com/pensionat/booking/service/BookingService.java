@@ -10,6 +10,7 @@ import com.pensionat.customer.repository.CustomerRepository;
 import com.pensionat.exception.BadRequestException;
 import com.pensionat.exception.NotFoundException;
 import com.pensionat.room.model.RoomEntity;
+import com.pensionat.room.model.RoomType;
 import com.pensionat.room.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,9 @@ public class BookingService {
         if (!request.endDate().isAfter(request.startDate())) {
             throw new BadRequestException("Check-out date must be after check-in date");
         }
+        if(request.extraBed() && room.getRoomType() != RoomType.DOUBLE){
+            throw new BadRequestException("Extra bed is only available to double rooms");
+        }
 
         boolean roomAlreadyBooked =
                 bookingRepository.existsByRoomIdAndBookingStatusAndStartDateBeforeAndEndDateAfter(
@@ -62,7 +66,7 @@ public class BookingService {
                 request.endDate(),
                 BookingStatus.ACTIVE
         );
-
+        booking.setExtraBed(request.extraBed());
         return bookingRepository.save(booking);
     }
 
@@ -87,6 +91,9 @@ public class BookingService {
         if (!request.endDate().isAfter(request.startDate())) {
             throw new BadRequestException("Check-out date must be after check-in date");
         }
+        if(request.extraBed() && room.getRoomType() != RoomType.DOUBLE){
+            throw new BadRequestException("Extra bed is only available to double rooms");
+        }
 
         boolean roomAlreadyBooked = bookingRepository.findAll().stream()
                 .anyMatch(existingBooking ->
@@ -106,7 +113,7 @@ public class BookingService {
         booking.setStartDate(request.startDate());
         booking.setEndDate(request.endDate());
         booking.setBookingStatus(BookingStatus.ACTIVE);
-
+        booking.setExtraBed(request.extraBed());
         return bookingRepository.save(booking);
     }
 
