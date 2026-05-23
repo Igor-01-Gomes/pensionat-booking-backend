@@ -1,6 +1,7 @@
 package com.pensionat.customer.controller;
 
 import com.pensionat.customer.dto.CreateCustomerRequest;
+import com.pensionat.customer.dto.CustomerResponse;
 import com.pensionat.customer.dto.UpdateCustomerRequest;
 import com.pensionat.customer.model.CustomerEntity;
 import com.pensionat.customer.service.CustomerService;
@@ -20,13 +21,17 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<CustomerEntity> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public List<CustomerResponse> getAllCustomers() {
+        return customerService.getAllCustomers()
+                .stream()
+                .map(CustomerResponse::from)
+                .toList();
     }
 
     @PostMapping
-    public CustomerEntity createCustomer(@Valid @RequestBody CreateCustomerRequest request) {
-        return customerService.createCustomer(request);
+    public CustomerResponse createCustomer(@Valid @RequestBody CreateCustomerRequest request) {
+        CustomerEntity customerEntity = customerService.createCustomer(request);
+        return CustomerResponse.from(customerEntity);
     }
 
     @DeleteMapping("/{id}")
@@ -35,10 +40,11 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public CustomerEntity updateCustomer(
+    public CustomerResponse updateCustomer(
             @PathVariable Long id,
             @Valid @RequestBody UpdateCustomerRequest request
     ) {
-        return customerService.updateCustomer(id, request);
+        CustomerEntity customerEntity = customerService.updateCustomer(id, request);
+        return CustomerResponse.from(customerEntity);
     }
 }

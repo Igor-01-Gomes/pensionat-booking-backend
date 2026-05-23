@@ -1,5 +1,6 @@
 package com.pensionat.booking.controller;
 
+import com.pensionat.booking.dto.BookingResponse;
 import com.pensionat.booking.dto.CreateBookingRequest;
 import com.pensionat.booking.dto.UpdateBookingRequest;
 import com.pensionat.booking.model.BookingEntity;
@@ -17,28 +18,35 @@ public class BookingController {
 
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
+
     }
 
     @GetMapping
-    public List<BookingEntity> getAllBookings() {
-        return bookingService.getAllBookings();
+    public List<BookingResponse> getAllBookings() {
+        return bookingService.getAllBookings()
+                .stream()
+                .map(BookingResponse::from)
+                .toList();
     }
 
     @PostMapping
-    public BookingEntity createBooking(@Valid @RequestBody CreateBookingRequest request) {
-        return bookingService.createBooking(request);
+    public BookingResponse createBooking(@Valid @RequestBody CreateBookingRequest request) {
+        BookingEntity bookingEntity = bookingService.createBooking(request);
+        return BookingResponse.from(bookingEntity);
     }
 
     @PutMapping("/{id}")
-    public BookingEntity updateBooking(
+    public BookingResponse updateBooking(
             @PathVariable Long id,
             @Valid @RequestBody UpdateBookingRequest request
     ) {
-        return bookingService.updateBooking(id, request);
+        BookingEntity bookingEntity = bookingService.updateBooking(id, request);
+        return BookingResponse.from(bookingEntity);
     }
 
     @PatchMapping("/{id}/cancel")
-    public BookingEntity cancelBooking(@PathVariable Long id) {
-        return bookingService.cancelBooking(id);
+    public BookingResponse cancelBooking(@PathVariable Long id) {
+        BookingEntity bookingEntity = bookingService.cancelBooking(id);
+        return BookingResponse.from(bookingEntity);
     }
 }
