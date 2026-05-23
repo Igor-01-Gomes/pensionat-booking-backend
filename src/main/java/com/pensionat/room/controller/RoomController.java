@@ -1,5 +1,6 @@
 package com.pensionat.room.controller;
 
+import com.pensionat.room.dto.RoomResponse;
 import com.pensionat.room.model.RoomEntity;
 import com.pensionat.room.service.RoomService;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,16 @@ public class RoomController {
     }
 
     @GetMapping
-    public List<RoomEntity> getAllRooms() {
-        return roomService.getAllRooms();
+    public List<RoomResponse> getAllRooms() {
+        return roomService.getAllRooms()
+                .stream()
+                .map(RoomResponse::from)
+                .toList();
     }
 
     @PostMapping
-    public RoomEntity createRoom(@RequestBody RoomEntity room) {
-        return roomService.createRoom(room);
+    public RoomResponse createRoom(@RequestBody RoomEntity room) {
+        RoomEntity savedRoom = roomService.createRoom(room);
+        return RoomResponse.from(savedRoom);
     }
 }
