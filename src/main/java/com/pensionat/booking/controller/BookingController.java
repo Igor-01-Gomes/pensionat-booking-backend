@@ -4,6 +4,7 @@ import com.pensionat.booking.dto.BookingResponse;
 import com.pensionat.booking.dto.CreateBookingRequest;
 import com.pensionat.booking.dto.UpdateBookingRequest;
 import com.pensionat.booking.model.BookingEntity;
+import com.pensionat.booking.dto.BookingResponse;
 import com.pensionat.booking.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

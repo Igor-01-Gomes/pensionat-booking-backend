@@ -9,15 +9,19 @@ public record BookingResponse(
         Long id,
         Long customerId,
         Long roomId,
+        int roomNumber,
         LocalDate startDate,
         LocalDate endDate,
         BookingStatus status
+
+
 ) {
     public static BookingResponse from(BookingEntity entity) {
         return new BookingResponse(
                 entity.getId(),
                 entity.getCustomer().getId(),
                 entity.getRoom().getId(),
+                entity.getRoom().getRoomNumber(),
                 entity.getStartDate(),
                 entity.getEndDate(),
                 entity.getBookingStatus()
