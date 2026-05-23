@@ -13,6 +13,7 @@ import com.pensionat.exception.BadRequestException;
 import com.pensionat.exception.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class CustomerService {
         return customer;
     }
 
+    @Transactional
     public void deleteCustomer(Long id) {
         if (!customerRepository.existsById(id)) {
             throw new NotFoundException("Customer not found");
@@ -51,6 +53,7 @@ public class CustomerService {
         if (bookingRepository.existsByCustomerIdAndBookingStatus(id, BookingStatus.ACTIVE)) {
             throw new BadRequestException("Customer cannot be deleted with an active booking");
         }
+        bookingRepository.deleteByCustomerIdAndBookingStatus(id, BookingStatus.CANCELLED);
         customerRepository.deleteById(id);
     }
 

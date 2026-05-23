@@ -12,6 +12,11 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
             BookingStatus bookingStatus
     );
 
+    void deleteByCustomerIdAndBookingStatus(
+            Long customerId,
+            BookingStatus bookingStatus
+    );
+
     boolean existsByRoomIdAndBookingStatusAndStartDateBeforeAndEndDateAfter(
             Long roomId,
             BookingStatus bookingStatus,
