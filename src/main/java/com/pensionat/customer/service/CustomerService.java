@@ -61,21 +61,24 @@ public class CustomerService {
         CustomerEntity customer = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
 
-        if(customerRepository.existsByEmailAndIdNot(request.email(), id)) {
+        if (customerRepository.existsByEmailAndIdNot(request.email(), id)) {
             throw new BadRequestException("Email is already in use");
         }
         customer.setFirstName(request.firstName());
         customer.setLastName(request.lastName());
         customer.setEmail(request.email());
-        customer.setHashedPassword(passwordEncoder.encode(request.hashedPassword()));
+        if (request.hashedPassword() != null && !request.hashedPassword().isBlank()) {
+            customer.setHashedPassword(passwordEncoder.encode(request.hashedPassword()));
+        }
         customer.setPhoneNumber(request.phone());
         customerRepository.save(customer);
         return customer;
     }
+
     public LoginResponse login(LoginRequest request) {
         CustomerEntity customer = customerRepository.findByEmail(request.email())
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
-        if(!passwordEncoder.matches(request.password(), customer.getHashedPassword())) {
+        if (!passwordEncoder.matches(request.password(), customer.getHashedPassword())) {
             throw new BadRequestException("Invalid password");
         }
         return new LoginResponse(
