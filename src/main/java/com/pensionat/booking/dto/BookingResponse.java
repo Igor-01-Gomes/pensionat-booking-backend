@@ -12,7 +12,9 @@ public record BookingResponse(
         int roomNumber,
         LocalDate startDate,
         LocalDate endDate,
-        BookingStatus status
+        BookingStatus status,
+        boolean extraBed
+
 
 
 ) {
@@ -24,7 +26,8 @@ public record BookingResponse(
                 entity.getRoom().getRoomNumber(),
                 entity.getStartDate(),
                 entity.getEndDate(),
-                entity.getBookingStatus()
+                entity.getBookingStatus(),
+                entity.isExtraBed()
         );
     }
 }
