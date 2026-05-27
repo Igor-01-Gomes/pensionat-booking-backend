@@ -1,4 +1,5 @@
 package com.pensionat.customer.dto;
+
 import com.pensionat.customer.model.CustomerEntity;
 
 

@@ -43,7 +43,7 @@ public class BookingService {
         if (!request.endDate().isAfter(request.startDate())) {
             throw new BadRequestException("Check-out date must be after check-in date");
         }
-        if(request.extraBed() && room.getRoomType() != RoomType.DOUBLE){
+        if (request.extraBed() && room.getRoomType() != RoomType.DOUBLE) {
             throw new BadRequestException("Extra bed is only available to double rooms");
         }
 
@@ -91,7 +91,7 @@ public class BookingService {
         if (!request.endDate().isAfter(request.startDate())) {
             throw new BadRequestException("Check-out date must be after check-in date");
         }
-        if(request.extraBed() && room.getRoomType() != RoomType.DOUBLE){
+        if (request.extraBed() && room.getRoomType() != RoomType.DOUBLE) {
             throw new BadRequestException("Extra bed is only available to double rooms");
         }
 

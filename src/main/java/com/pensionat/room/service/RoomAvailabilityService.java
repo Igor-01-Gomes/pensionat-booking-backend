@@ -1,4 +1,5 @@
 package com.pensionat.room.service;
+
 import com.pensionat.booking.model.BookingStatus;
 import com.pensionat.booking.repository.BookingRepository;
 import com.pensionat.exception.BadRequestException;

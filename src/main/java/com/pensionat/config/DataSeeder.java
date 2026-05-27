@@ -22,11 +22,11 @@ public class DataSeeder {
 
             System.out.println("Database Empty - Seeding Rooms: ");
 
-            roomRepository.save(buildRoom(101, 1, RoomType.SINGLE, 800,"Single-bed room with a modernstyle on a marine take -  north side of building","https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
-            roomRepository.save(buildRoom(102, 1, RoomType.SINGLE, 800,"Single-bed room with a modernstyle on a marine take -  south side of building","https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
-            roomRepository.save(buildRoom(103, 1, RoomType.SINGLE, 800,"Single-bed room with a modernstyle on a marine take -  west side of building","https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
-            roomRepository.save(buildRoom(104, 1, RoomType.SINGLE, 800,"Single-bed room with a modernstyle on a marine take -  east side of building","https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
-            roomRepository.save(buildRoom(105, 1, RoomType.SINGLE, 900,"Single-bed in a minmalistic room with a bigger bed for better sleep","https://images.unsplash.com/photo-1759264244726-adde4e4318fc?w=1280&q=80"));
+            roomRepository.save(buildRoom(101, 1, RoomType.SINGLE, 800, "Single-bed room with a modernstyle on a marine take -  north side of building", "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
+            roomRepository.save(buildRoom(102, 1, RoomType.SINGLE, 800, "Single-bed room with a modernstyle on a marine take -  south side of building", "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
+            roomRepository.save(buildRoom(103, 1, RoomType.SINGLE, 800, "Single-bed room with a modernstyle on a marine take -  west side of building", "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
+            roomRepository.save(buildRoom(104, 1, RoomType.SINGLE, 800, "Single-bed room with a modernstyle on a marine take -  east side of building", "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=1280&q=80"));
+            roomRepository.save(buildRoom(105, 1, RoomType.SINGLE, 900, "Single-bed in a minmalistic room with a bigger bed for better sleep", "https://images.unsplash.com/photo-1759264244726-adde4e4318fc?w=1280&q=80"));
 
             roomRepository.save(buildRoom(201, 1, RoomType.DOUBLE, 1200, "Queensize rustic with wooden features OBS no windows - north side of building", "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=1280&q=80"));
             roomRepository.save(buildRoom(202, 1, RoomType.DOUBLE, 1200, "Queensize rustic with wooden features OBS no windows - east side of building", "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=1280&q=80"));
