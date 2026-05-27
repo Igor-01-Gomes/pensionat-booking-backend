@@ -11,8 +11,7 @@ public record RoomResponse(
         int pricePerNight,
         String description,
         String photoUrl
-)
-{
+) {
     public static RoomResponse from(RoomEntity entity) {
         return new RoomResponse(
                 entity.getId(),

@@ -16,7 +16,6 @@ public record BookingResponse(
         boolean extraBed
 
 
-
 ) {
     public static BookingResponse from(BookingEntity entity) {
         return new BookingResponse(
